@@ -1,0 +1,39 @@
+# An Analysis of Exercise Habits, Age, and Body Mass Index in a Selected Sample
+# Load health data
+attach(labdata)
+
+# Age Analysis
+age_over_65_ratio <- summary(age >= 65)/153
+
+# Exercise by Age Groups Analysis
+exercise <- as.factor(exercise)
+ex_20_30 <- summary(exercise[(age > 20) & (age <= 30)])
+ex_30_40 <- summary(exercise[(age > 30) & (age <= 40)])
+ex_40_50 <- summary(exercise[(age > 40) & (age <= 50)])
+ex_50_60 <- summary(exercise[(age > 50) & (age <= 60)])
+ex_60_70 <- summary(exercise[(age > 60) & (age <= 70)])
+ex_70_80 <- summary(exercise[(age > 70) & (age <= 80)])
+
+# Body Mass Index (BMI) Stripchart
+BMI <- weight/(height)^2
+stripchart(BMI ~ sex*group, 
+           ylab="Body Mass Index", 
+           vertical=TRUE, 
+           col=c("red", "blue"))
+
+# Interpretation:
+# - Y-axis represents BMI values
+# - Females are shown in red, Males in blue
+# - Groups "A" and "B" on x-axis
+# - Allows comparison of BMI across genders & groups
+
+# t-test for weight between sexes
+t.test(weight ~ sex)
+
+# ANOVA for BMI across exercise groups (assuming more than 2 groups)
+anova(lm(BMI ~ exercise))
+
+# Regression analysis
+model <- lm(BMI ~ age + sex + exercise)
+summary(model)
+
